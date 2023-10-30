@@ -1,0 +1,26 @@
+---
+- name: Create AWS ec2
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+
+    - name: Create a key pair for an EC2 instance
+      amazon.aws.ec2_key:
+        name: prod-ssh-key
+        region: "{{ region }}"
+    
+    - name: Create an amazon Ec2 instance
+      amazon.aws.ec2_instance:
+        name: "{{ name }}"
+        key_name: prod-ssh-key
+        region: "{{ region }}"
+        instance_type: "{{ instance_type }}" 
+        network:
+          assign_public_ip: true
+        image_id: ami-05483cc0cb88ab670
+        tags:
+          Environment: Testing
+        
+    
+    
